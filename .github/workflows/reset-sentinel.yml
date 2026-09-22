@@ -1,10 +1,10 @@
-name: Reset Sentinel
+﻿name: Reset Sentinel
 
 on:
   # Every 30 minutes, deliberately away from the top of the hour.
   # GitHub documents that scheduled runs can be delayed around :00.
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '3,13,23,33,43,53 * * * *'
   workflow_dispatch:
     inputs:
       test_webhook:
@@ -42,7 +42,7 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.test_webhook != true }}
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          MAX_AGE_MINUTES: '50'
+          MAX_AGE_MINUTES: '10'
         run: python3 reset_tracker.py
 
       - name: Persist notified reset timestamp
@@ -59,3 +59,4 @@ jobs:
           git add data/state.json
           git commit -m "chore: record notified Codex reset"
           git push
+
